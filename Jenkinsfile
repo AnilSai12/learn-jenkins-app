@@ -2,10 +2,22 @@ pipeline {
     agent any
 
     stages {
-        stage('First Full Jenkin') {
+        stage('Build') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
             steps {
-                
-                sh 'echo "Hello from Anil!"'
+                sh '''
+                    ls -la
+                    node --version
+                    npm --version
+                    npm ci
+                    npm run build
+                    ls -la
+                '''
             }
         }
     }
